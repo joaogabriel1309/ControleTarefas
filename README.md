@@ -6,10 +6,11 @@ Este projeto é um sistema de controle de tarefas desenvolvido em Delphi. Ele pe
 ## Estrutura do Projeto
 A estrutura do projeto está organizada da seguinte forma:
 
-/src          → Arquivos fonte do Delphi (.pas, .dfm)
-/formularios  → Telas do sistema
-/dados        → Módulos de acesso ao banco de dados
-/modelos      → Classes para representar as entidades
+- /src          → Arquivos fonte do Delphi (.pas, .dfm)
+- /formularios  → Telas do sistema
+- /dados        → Módulos de acesso ao banco de dados
+- /modelos      → Classes para representar as entidades
+
 ## Tecnologias Utilizadas
 **Delphi 12**
 
