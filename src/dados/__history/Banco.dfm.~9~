@@ -1,0 +1,23 @@
+object DataModule1: TDataModule1
+  Height = 480
+  Width = 640
+  object FDConnection: TFDConnection
+    Params.Strings = (
+      'Database=dbapiuser'
+      'User_Name=root'
+      'Password=123Ma='
+      'Server=localhost'
+      'Port=3307'
+      'CharacterSet=utf8mb4'
+      'UseSSL=True'
+      'DriverID=MySQL')
+    LoginPrompt = False
+    Left = 248
+    Top = 128
+  end
+  object FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink
+    VendorLib = 'C:\projetos\Delphi\ControleTarefas\lib\libmysql.dll'
+    Left = 376
+    Top = 240
+  end
+end

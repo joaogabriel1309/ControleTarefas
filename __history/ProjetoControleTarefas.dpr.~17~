@@ -1,0 +1,26 @@
+program ProjetoControleTarefas;
+
+uses
+  Vcl.Forms,
+  FrmPrincipal in 'src\formularios\FrmPrincipal.pas' {FormMain},
+  FrmLogin in 'src\formularios\FrmLogin.pas' {formLogin},
+  AuthController in 'src\controladores\AuthController.pas',
+  FrmUsuario in 'src\formularios\FrmUsuario.pas' {FormUsuario},
+  frmTarefa in 'src\formularios\frmTarefa.pas' {frmTarefas},
+  TarefaController in 'src\controladores\TarefaController.pas',
+  TTarefa in 'src\modelos\TTarefa.pas',
+  TUsuario in 'src\modelos\TUsuario.pas',
+  Conexao in 'src\dados\Conexao.pas' {Tconexao: TDataModule},
+  UsuarioController in 'src\controladores\UsuarioController.pas';
+
+// Banco in 'src\dados\Banco.pas' {Conexaoo: TDataModule};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TTconexao, Tconexao);
+  Application.CreateForm(TFormMain, FormMain);
+  Application.Run;
+end.

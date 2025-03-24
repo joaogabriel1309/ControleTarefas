@@ -1,0 +1,41 @@
+program ProjetoControleTarefas;
+
+uses
+  Vcl.Forms,
+  Vcl.Dialogs,
+  System.SysUtils,
+  FrmPrincipal in 'src\formularios\FrmPrincipal.pas' {FormMain},
+  FrmLogin in 'src\formularios\FrmLogin.pas' {formLogin},
+  FrmUsuario in 'src\formularios\FrmUsuario.pas' {FormUsuario},
+  frmTarefa in 'src\formularios\frmTarefa.pas' {frmTarefas},
+  TTarefa in 'src\modelos\TTarefa.pas',
+  TUsuario in 'src\modelos\TUsuario.pas',
+  Conexao in 'src\dados\Conexao.pas' {Tconexao: TDataModule},
+  TUsuarioTarefa in 'src\modelos\TUsuarioTarefa.pas',
+  FrmAtribuicao in 'src\formularios\FrmAtribuicao.pas' {TFrmAtribuicao},
+  frmPesquisaUsuario in 'src\formularios\frmPesquisaUsuario.pas' {TfrmPesquisaUsuario},
+  frmPesquisaTarefa in 'src\formularios\frmPesquisaTarefa.pas' {TfrmPesquisaTarefa};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+
+  try
+    Application.CreateForm(TTconexao, Tconexao);
+    Tconexao.ConectarBanco;
+    Tconexao.CriarTabelas;
+
+    Application.CreateForm(TFormMain, FormMain);
+
+    Application.Run;
+  except
+    on E: Exception do
+    begin
+      ShowMessage('Erro ao iniciar o sistema: ' + E.Message);
+      Halt(1);
+    end;
+  end;
+end.
+

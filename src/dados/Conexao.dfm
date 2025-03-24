@@ -1,0 +1,25 @@
+object Tconexao: TTconexao
+  Height = 480
+  Width = 640
+  object FDConnection: TFDConnection
+    Params.Strings = (
+      'Database=bdtarefa'
+      'User_Name=root'
+      'Server=localhost'
+      'DriverID=MySQL')
+    Connected = True
+    LoginPrompt = False
+    Left = 184
+    Top = 88
+  end
+  object FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink
+    VendorLib = 'C:\projetos\Delphi\ControleTarefas\lib\libmysql.dll'
+    Left = 376
+    Top = 192
+  end
+  object FDQuery: TFDQuery
+    Connection = FDConnection
+    Left = 304
+    Top = 224
+  end
+end

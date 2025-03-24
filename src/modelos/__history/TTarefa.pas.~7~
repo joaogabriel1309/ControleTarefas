@@ -1,0 +1,153 @@
+﻿unit TTarefa;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, System.Generics.Collections, Data.DB, FireDAC.Comp.Client;
+
+type
+  Tarefa = class
+  private
+    FCodigo: Integer;
+    FNome: string;
+    FTipo: string;
+  public
+    constructor Create; overload;
+    constructor Create(const Codigo: Integer; const Nome, Tipo: string); overload;
+
+    function Salvar: Boolean;
+    function Excluir: Boolean;
+    class function BuscarPorCodigo(const Codigo: Integer): Tarefa;
+    class function BuscarTodos: TList<Tarefa>;
+    class function PegaMaxCodigo: Integer;
+
+    property Codigo: Integer read FCodigo write FCodigo;
+    property Nome: string read FNome write FNome;
+    property Tipo: string read FTipo write FTipo;
+  end;
+
+implementation
+
+uses Conexao;
+
+constructor Tarefa.Create;
+begin
+  inherited Create;
+  FCodigo := 0;
+  FNome := '';
+  FTipo := '';
+end;
+
+constructor Tarefa.Create(const Codigo: Integer; const Nome, Tipo: string);
+begin
+  inherited Create;
+  FCodigo := Codigo;
+  FNome := Nome;
+  FTipo := Tipo;
+end;
+
+function Tarefa.Salvar: Boolean;
+var
+  Query: TFDQuery;
+begin
+  Result := False;
+  Query := TFDQuery.Create(nil);
+  try
+    Query.Connection := Conexao.Tconexao.GetConexao();
+    Query.SQL.Text := 'INSERT INTO tarefa (codigo, nome, tipo) VALUES (:codigo, :nome, :tipo) ' +
+                      'ON DUPLICATE KEY UPDATE nome = :nome, tipo = :tipo';
+    Query.ParamByName('codigo').AsInteger := FCodigo;
+    Query.ParamByName('nome').AsString := FNome;
+    Query.ParamByName('tipo').AsString := FTipo;
+    Query.ExecSQL;
+    Result := True;
+  finally
+    Query.Free;
+  end;
+end;
+
+function Tarefa.Excluir: Boolean;
+var
+  Query: TFDQuery;
+begin
+  Result := False;
+  Query := TFDQuery.Create(nil);
+  try
+    Query.Connection := Conexao.Tconexao.GetConexao();
+    Query.SQL.Text := 'DELETE FROM tarefa WHERE codigo = :codigo';
+    Query.ParamByName('codigo').AsInteger := FCodigo;
+    Query.ExecSQL;
+    Result := True;
+  finally
+    Query.Free;
+  end;
+end;
+
+class function Tarefa.PegaMaxCodigo: Integer;
+var
+  Query: TFDQuery;
+begin
+  Result := 0;
+  Query := TFDQuery.Create(nil);
+  try
+    Query.Connection := Conexao.Tconexao.GetConexao();
+    Query.SQL.Text := 'SELECT MAX(codigo) AS MaxCodigo FROM tarefa';
+    Query.Open;
+    if not Query.IsEmpty then
+      Result := Query.FieldByName('MaxCodigo').AsInteger + 1;
+  finally
+    Query.Free;
+  end;
+end;
+
+class function Tarefa.BuscarPorCodigo(const Codigo: Integer): Tarefa;
+var
+  Query: TFDQuery;
+begin
+  Result := nil;
+  Query := TFDQuery.Create(nil);
+  try
+    Query.Connection := Conexao.Tconexao.GetConexao();
+    Query.SQL.Text := 'SELECT * FROM tarefa WHERE codigo = :codigo';
+    Query.ParamByName('codigo').AsInteger := Codigo;
+    Query.Open;
+    if not Query.IsEmpty then
+    begin
+      Result := Tarefa.Create;
+      Result.FCodigo := Query.FieldByName('codigo').AsInteger;
+      Result.FNome := Query.FieldByName('nome').AsString;
+      Result.FTipo := Query.FieldByName('tipo').AsString;
+    end;
+  finally
+    Query.Free;
+  end;
+end;
+
+class function Tarefa.BuscarTodos: TList<Tarefa>;
+var
+  Query: TFDQuery;
+  Lista: TList<Tarefa>;
+begin
+  Lista := TList<Tarefa>.Create;
+  Query := TFDQuery.Create(nil);
+  try
+    Query.Connection := Conexao.Tconexao.GetConexao();
+    Query.SQL.Text := 'SELECT * FROM tarefa';
+    Query.Open;
+    while not Query.Eof do
+    begin
+      Lista.Add(Tarefa.Create(
+        Query.FieldByName('codigo').AsInteger,
+        Query.FieldByName('nome').AsString,
+        Query.FieldByName('tipo').AsString
+      ));
+      Query.Next;
+    end;
+    Result := Lista;
+  finally
+    Query.Free;
+  end;
+end;
+
+end.
+

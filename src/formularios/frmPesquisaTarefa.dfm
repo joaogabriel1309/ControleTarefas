@@ -1,0 +1,89 @@
+object TfrmPesquisaTarefa: TTfrmPesquisaTarefa
+  Left = 448
+  Top = 220
+  BorderStyle = bsToolWindow
+  Caption = 'Pesquisa tarefas'
+  ClientHeight = 340
+  ClientWidth = 471
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poDesigned
+  OnShow = FormShow
+  TextHeight = 15
+  object GroupBox1: TGroupBox
+    Left = 0
+    Top = 0
+    Width = 471
+    Height = 81
+    Align = alTop
+    TabOrder = 0
+    ExplicitWidth = 469
+    object Label1: TLabel
+      Left = 16
+      Top = 16
+      Width = 46
+      Height = 15
+      Caption = 'Pesquisa'
+    end
+    object EditPesquisa: TEdit
+      Left = 16
+      Top = 32
+      Width = 353
+      Height = 23
+      TabOrder = 0
+    end
+    object ButtonPesquisa: TButton
+      Left = 381
+      Top = 31
+      Width = 75
+      Height = 25
+      Caption = 'Pesquisar'
+      TabOrder = 1
+      OnClick = ButtonPesquisaClick
+    end
+  end
+  object DBGrid1: TDBGrid
+    Left = 0
+    Top = 81
+    Width = 471
+    Height = 257
+    Align = alTop
+    DataSource = DataSource1
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+    TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -12
+    TitleFont.Name = 'Segoe UI'
+    TitleFont.Style = []
+    OnCellClick = DBGrid1CellClick
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'codigo'
+        Title.Caption = 'C'#243'digo'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'nome'
+        Title.Caption = 'Nome'
+        Width = 346
+        Visible = True
+      end>
+  end
+  object FDQuery: TFDQuery
+    Connection = Tconexao.FDConnection
+    Left = 320
+    Top = 208
+  end
+  object DataSource1: TDataSource
+    DataSet = FDQuery
+    Left = 272
+    Top = 144
+  end
+end

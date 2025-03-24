@@ -1,0 +1,53 @@
+﻿unit FrmLogin;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TformLogin = class(TForm)
+    EditLogin: TEdit;
+    EditSenha: TEdit;
+    ButtonEntrar: TButton;
+    ButtonCadastrar: TButton;
+    Label1: TLabel;
+    Label2: TLabel;
+    procedure ButtonEntrarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+
+  public
+    Validado: Boolean;
+  end;
+
+var
+  formLogin: TformLogin;
+
+
+implementation
+
+{$R *.dfm}
+
+uses AuthController;
+
+procedure TformLogin.ButtonEntrarClick(Sender: TObject);
+begin
+  Validado :=  AuthController.ValidaLogin(EditLogin.Text, EditSenha.Text);
+  if Validado then
+   self.Close
+  else
+  begin
+   Application.MessageBox('Login Invalido!', 'Atenção', MB_OK+MB_ICONWARNING);
+   if EditLogin.CanFocus then
+     EditLogin.SetFocus;
+  end;
+end;
+
+procedure TformLogin.FormShow(Sender: TObject);
+begin
+  Validado := false;
+end;
+
+end.

@@ -1,0 +1,189 @@
+unit TUsuario;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, System.Generics.Collections, Data.DB, Data.Win.ADODB, FireDAC.Comp.Client;
+
+type
+  Usuario = class
+  private
+    FCodigo: Integer;
+    FNome: string;
+    FDireito: string;
+    FSenha: string;
+    class var FConexao: TADOConnection;
+  public
+
+    constructor Create(const Codigo: Integer = 0;
+                       const Nome: string = '';
+                       const Direito: string = 'O';
+                       const Senha: string = '');
+
+    function Salvar: Boolean;
+    function Excluir: Boolean;
+    class function BuscarPorCodigo(const Codigo: Integer): Usuario;
+    class function BuscarTodos: TList<Usuario>;
+    class function ValidarLogin(const CodUser: Integer; const Senha: string): Boolean;
+
+    property Codigo: Integer read FCodigo write FCodigo;
+    property Nome: string read FNome write FNome;
+    property Direito: string read FDireito write FDireito;
+    property Senha: string read FSenha write FSenha;
+  end;
+
+implementation
+
+uses Conexao;
+
+constructor Usuario.Create(const Codigo: Integer = 0; const Nome: string = ''; const Direito: string = 'O'; const Senha: string = '');
+begin
+  FCodigo := Codigo;
+  FNome := Nome;
+  FDireito := Direito;
+  FSenha := Senha;
+end;
+
+function Usuario.Salvar: Boolean;
+var
+  Query: TFDQuery;
+begin
+  Result := False;
+
+  Query := TFDQuery.Create(nil);
+  try
+    Query.Connection := Tconexao.GetConexao();
+    if FCodigo = 0 then
+    begin
+      Query.Close;
+      Query.SQL.Clear;
+      Query.SQL.Add('INSERT INTO usuario (nome, direito, senha) VALUES (:nome, :direito, :senha)');
+    end
+    else
+    begin
+      Query.Close;
+      Query.SQL.Clear;
+      Query.SQL.Add('UPDATE usuario SET nome = :nome, direito = :direito, senha = :senha WHERE codigo = :codigo');
+      Query.ParamByName('codigo').AsInteger := FCodigo;
+    end;
+    Query.ParamByName('nome').AsString := FNome;
+    Query.ParamByName('direito').AsString := FDireito;
+    Query.ParamByName('senha').AsString := FSenha;
+    Query.ExecSQL;
+    Query.Close;
+    Result := True;
+  finally
+    Query.Free;
+  end;
+end;
+
+function Usuario.Excluir: Boolean;
+var
+  Query: TFDQuery;
+begin
+  Result := False;
+
+  Query := TFDQuery.Create(nil);
+  try
+    Query.Connection := Tconexao.GetConexao();
+    Query.Close;
+    Query.SQL.Clear;
+    Query.SQL.Add('DELETE FROM usuario WHERE codigo = :codigo');
+    Query.ParamByName('codigo').AsInteger := FCodigo;
+    Query.ExecSQL;
+    Query.Close;
+    Result := True;
+  finally
+    Query.Free;
+  end;
+end;
+
+class function Usuario.BuscarPorCodigo(const Codigo: Integer): Usuario;
+var
+  Query: TFDQuery;
+begin
+  Result := nil;
+
+  Query := TFDQuery.Create(nil);
+  try
+    Query.Connection := Conexao.Tconexao.GetConexao();
+    Query.Close;
+    Query.SQL.Clear;
+    Query.SQL.Add('SELECT * FROM usuario WHERE codigo = :codigo');
+    Query.ParamByName('codigo').AsInteger := Codigo;
+    Query.Open;
+
+    if not Query.IsEmpty then
+    begin
+      Result := Usuario.Create;
+      Result.FCodigo := Query.FieldByName('codigo').AsInteger;
+      Result.FNome := Query.FieldByName('nome').AsString;
+      Result.FDireito := Query.FieldByName('direito').AsString;
+      Result.FSenha := Query.FieldByName('senha').AsString;
+    end;
+
+    Query.Close;
+  finally
+    Query.Free;
+  end;
+end;
+
+class function Usuario.BuscarTodos: TList<Usuario>;
+var
+  Query: TFDQuery;
+  Lista: TList<Usuario>;
+begin
+  Lista := TList<Usuario>.Create;
+
+  Query := TFDQuery.Create(nil);
+  try
+    Query.Connection := Tconexao.GetConexao();
+    Query.Close;
+    Query.SQL.Clear;
+    Query.SQL.Add('SELECT * FROM usuario');
+    Query.Open;
+
+    while not Query.Eof do
+    begin
+      Lista.Add(Usuario.Create(
+        Query.FieldByName('codigo').AsInteger,
+        Query.FieldByName('nome').AsString,
+        Query.FieldByName('direito').AsString,
+        Query.FieldByName('senha').AsString
+      ));
+      Query.Next;
+    end;
+
+    Query.Close;
+    Result := Lista;
+  finally
+    Query.Free;
+  end;
+end;
+
+class function Usuario.ValidarLogin(const CodUser: Integer; const Senha: string): Boolean;
+var
+  Query: TFDQuery;
+begin
+  Result := False;
+
+  Query := TFDQuery.Create(nil);
+  try
+    Query.Connection := Tconexao.GetConexao();
+    Query.Close;
+    Query.SQL.Clear;
+    Query.SQL.Add('SELECT codigo FROM usuario WHERE codigo = :codigo AND senha = :senha');
+    Query.ParamByName('codigo').AsInteger := CodUser;
+    Query.ParamByName('senha').AsString := Senha;
+    Query.Open;
+
+    if not Query.IsEmpty then
+      Result := True;
+    Query.Close;
+  finally
+    Query.Free;
+  end;
+end;
+
+end.
+

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2025/03/21 14:30:30.000.381,=C:\Users\João Gabriel\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2025/03/21 14:32:12.000.942,=C:\Users\João Gabriel\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2025/03/21 14:32:40.000.525,C:\projetos\Delphi\ControleTarefas\Main.pas=C:\Users\João Gabriel\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2025/03/21 14:32:40.000.525,C:\projetos\Delphi\ControleTarefas\Main.dfm=C:\Users\João Gabriel\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2025/03/21 14:33:47.000.020,=C:\Users\João Gabriel\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2025/03/21 14:39:13.000.225,C:\projetos\Delphi\ControleTarefas\Login.dfm=C:\Users\João Gabriel\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2025/03/21 14:39:13.000.225,C:\projetos\Delphi\ControleTarefas\Login.pas=C:\Users\João Gabriel\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2025/03/21 15:55:51.000.414,=C:\Users\João Gabriel\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2025/03/21 15:59:54.000.719,C:\projetos\Delphi\ControleTarefas\utilitarios\Validador.pas=C:\Users\João Gabriel\OneDrive\Documentos\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2025/03/21 16:21:58.000.669,C:\projetos\Delphi\ControleTarefas\ProjetoControleTarefas.dproj=C:\Users\João Gabriel\OneDrive\Documentos\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2025/03/21 16:28:46.000.739,=C:\projetos\Delphi\ControleTarefas\Unit1.pas</Transaction>
+    <Transaction>2025/03/21 16:29:46.000.106,C:\projetos\Delphi\ControleTarefas\src\controladores\AuthController.pas=C:\projetos\Delphi\ControleTarefas\Unit1.pas</Transaction>
+    <Transaction>2025/03/21 17:06:06.000.389,=C:\projetos\Delphi\ControleTarefas\Unit1.pas</Transaction>
+    <Transaction>2025/03/21 17:07:06.000.188,C:\projetos\Delphi\ControleTarefas\src\dados\Banco.pas=C:\projetos\Delphi\ControleTarefas\Unit1.pas</Transaction>
+    <Transaction>2025/03/21 17:07:06.000.188,C:\projetos\Delphi\ControleTarefas\src\dados\Banco.dfm=C:\projetos\Delphi\ControleTarefas\Unit1.dfm</Transaction>
+    <Transaction>2025/03/22 10:28:13.000.573,C:\projetos\Delphi\ControleTarefas\src\dados\Banco.pas=</Transaction>
+    <Transaction>2025/03/22 11:20:27.000.511,=C:\projetos\Delphi\ControleTarefas\Unit1.pas</Transaction>
+    <Transaction>2025/03/22 11:23:45.000.593,C:\projetos\Delphi\ControleTarefas\Unit1.pas=C:\projetos\Delphi\ControleTarefas\src\formularios\FrmUsuario.pas</Transaction>
+    <Transaction>2025/03/22 11:23:45.000.593,C:\projetos\Delphi\ControleTarefas\Unit1.dfm=C:\projetos\Delphi\ControleTarefas\src\formularios\FrmUsuario.dfm</Transaction>
+    <Transaction>2025/03/22 12:14:18.000.980,=C:\projetos\Delphi\ControleTarefas\Unit1.pas</Transaction>
+    <Transaction>2025/03/22 12:16:12.000.569,=C:\projetos\Delphi\ControleTarefas\Unit1.pas</Transaction>
+    <Transaction>2025/03/22 12:19:04.000.940,C:\projetos\Delphi\ControleTarefas\Unit1.pas=C:\projetos\Delphi\ControleTarefas\src\formularios\frmTarefa.pas</Transaction>
+    <Transaction>2025/03/22 12:19:04.000.940,C:\projetos\Delphi\ControleTarefas\Unit1.dfm=C:\projetos\Delphi\ControleTarefas\src\formularios\frmTarefa.dfm</Transaction>
+    <Transaction>2025/03/22 13:03:08.000.247,=C:\projetos\Delphi\ControleTarefas\Unit1.pas</Transaction>
+    <Transaction>2025/03/22 13:03:35.000.880,C:\projetos\Delphi\ControleTarefas\Unit1.pas=C:\projetos\Delphi\ControleTarefas\src\controladores\TarefaController.pas</Transaction>
+    <Transaction>2025/03/22 13:04:04.000.310,=C:\projetos\Delphi\ControleTarefas\Unit1.pas</Transaction>
+    <Transaction>2025/03/22 13:04:30.000.893,C:\projetos\Delphi\ControleTarefas\Unit1.pas=C:\projetos\Delphi\ControleTarefas\src\modelos\TTarefa.pas</Transaction>
+    <Transaction>2025/03/22 17:27:59.000.334,=C:\projetos\Delphi\ControleTarefas\Unit1.pas</Transaction>
+    <Transaction>2025/03/22 17:28:58.000.568,C:\projetos\Delphi\ControleTarefas\Unit1.pas=C:\projetos\Delphi\ControleTarefas\src\modelos\TUsuario.pas</Transaction>
+    <Transaction>2025/03/22 17:35:30.000.681,=C:\projetos\Delphi\ControleTarefas\Unit1.pas</Transaction>
+    <Transaction>2025/03/22 17:35:43.000.727,=C:\projetos\Delphi\ControleTarefas\Unit1.pas</Transaction>
+    <Transaction>2025/03/22 17:36:06.000.122,C:\projetos\Delphi\ControleTarefas\Unit1.dfm=C:\projetos\Delphi\ControleTarefas\src\dados\Conexao.dfm</Transaction>
+    <Transaction>2025/03/22 17:36:06.000.122,C:\projetos\Delphi\ControleTarefas\Unit1.pas=C:\projetos\Delphi\ControleTarefas\src\dados\Conexao.pas</Transaction>
+    <Transaction>2025/03/22 18:34:17.000.507,=C:\projetos\Delphi\ControleTarefas\Unit2.pas</Transaction>
+    <Transaction>2025/03/22 18:34:59.000.384,C:\projetos\Delphi\ControleTarefas\Unit2.dfm=C:\projetos\Delphi\ControleTarefas\src\dados\Banco.dfm</Transaction>
+    <Transaction>2025/03/22 18:34:59.000.384,C:\projetos\Delphi\ControleTarefas\Unit2.pas=C:\projetos\Delphi\ControleTarefas\src\dados\Banco.pas</Transaction>
+    <Transaction>2025/03/22 19:11:26.000.163,=C:\projetos\Delphi\ControleTarefas\Unit1.pas</Transaction>
+    <Transaction>2025/03/22 19:12:30.000.355,C:\projetos\Delphi\ControleTarefas\Unit1.pas=C:\projetos\Delphi\ControleTarefas\src\controladores\UsuarioController.pas</Transaction>
+    <Transaction>2025/03/23 00:03:02.000.823,=C:\projetos\Delphi\ControleTarefas\Unit1.pas</Transaction>
+    <Transaction>2025/03/23 00:03:18.000.634,C:\projetos\Delphi\ControleTarefas\Unit1.pas=C:\projetos\Delphi\ControleTarefas\src\modelos\TUsuarioTarefa.pas</Transaction>
+    <Transaction>2025/03/23 01:36:34.000.085,=C:\projetos\Delphi\ControleTarefas\Unit1.pas</Transaction>
+    <Transaction>2025/03/23 01:38:45.000.826,C:\projetos\Delphi\ControleTarefas\Unit1.dfm=C:\projetos\Delphi\ControleTarefas\src\formularios\FrmAtribuicao.dfm</Transaction>
+    <Transaction>2025/03/23 01:38:45.000.826,C:\projetos\Delphi\ControleTarefas\Unit1.pas=C:\projetos\Delphi\ControleTarefas\src\formularios\FrmAtribuicao.pas</Transaction>
+    <Transaction>2025/03/23 12:27:29.000.018,=C:\projetos\Delphi\ControleTarefas\Unit1.pas</Transaction>
+    <Transaction>2025/03/23 12:28:46.000.245,C:\projetos\Delphi\ControleTarefas\Unit1.dfm=C:\projetos\Delphi\ControleTarefas\src\formularios\frmPesquisaUsuario.dfm</Transaction>
+    <Transaction>2025/03/23 12:28:46.000.245,C:\projetos\Delphi\ControleTarefas\Unit1.pas=C:\projetos\Delphi\ControleTarefas\src\formularios\frmPesquisaUsuario.pas</Transaction>
+    <Transaction>2025/03/23 16:19:35.722,=C:\projetos\Delphi\ControleTarefas\Unit1.pas</Transaction>
+    <Transaction>2025/03/23 16:21:21.265,C:\projetos\Delphi\ControleTarefas\src\formularios\frmPesquisaTarefa.pas=C:\projetos\Delphi\ControleTarefas\Unit1.pas</Transaction>
+    <Transaction>2025/03/23 16:21:21.265,C:\projetos\Delphi\ControleTarefas\src\formularios\frmPesquisaTarefa.dfm=C:\projetos\Delphi\ControleTarefas\Unit1.dfm</Transaction>
+  </Transactions>
+</BorlandProject>

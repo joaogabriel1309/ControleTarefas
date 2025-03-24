@@ -1,0 +1,82 @@
+unit TUsuarioTarefa;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, Data.DB, FireDAC.Comp.Client, Conexao, TTarefa, TUsuario;
+
+type
+  UsuarioTarefa = class
+  private
+    FCodUsuario: Integer;
+    FNomeUsuario: String;
+    FCodTarefa: Integer;
+    FNomeTarefa: String;
+    FTipo: String;
+  public
+    constructor Create(const CodUsuario: Integer; const CodTarefa: Integer);
+    function Salvar: Boolean;
+    function Excluir: Boolean;
+
+    property CodUsuario: Integer read FCodUsuario write FCodUsuario;
+    property CodTarefa: Integer read FCodTarefa write FCodTarefa;
+    property NomeUsuario: String read FNomeUsuario write FNomeUsuario;
+    property NomeTarefa: String read FNomeTarefa write FNomeTarefa;
+    property Tipo: String read FTipo write FTipo;
+  end;
+
+implementation
+
+constructor UsuarioTarefa.Create(const CodUsuario: Integer; const CodTarefa: Integer);
+begin
+  FCodUsuario := CodUsuario;
+  FCodTarefa := CodTarefa;
+  FNomeUsuario := '';
+  FNomeTarefa := '';
+  FTipo := '';
+end;
+
+function UsuarioTarefa.Salvar: Boolean;
+var
+  Query: TFDQuery;
+begin
+  Result := False;
+  Query := TFDQuery.Create(nil);
+  try
+    Query.Connection := Conexao.Tconexao.GetConexao();
+    Query.Close;
+    Query.SQL.Clear;
+    Query.SQL.Add('INSERT INTO usuario_tarefa (cod_usuario, cod_tarefa) ' +
+                  'VALUES (:cod_usuario, :cod_tarefa) ' +
+                  'ON DUPLICATE KEY UPDATE cod_tarefa = :cod_tarefa');
+    Query.ParamByName('cod_usuario').AsInteger := FCodUsuario;
+    Query.ParamByName('cod_tarefa').AsInteger := FCodTarefa;
+    Query.ExecSQL;
+    Result := True;
+  finally
+    Query.Free;
+  end;
+end;
+
+function UsuarioTarefa.Excluir: Boolean;
+var
+  Query: TFDQuery;
+begin
+  Result := False;
+  Query := TFDQuery.Create(nil);
+  try
+    Query.Connection := Conexao.Tconexao.GetConexao();
+    Query.Close;
+    Query.SQL.Clear;
+    Query.SQL.Add('DELETE FROM usuario_tarefa WHERE cod_usuario = :cod_usuario AND cod_tarefa = :cod_tarefa');
+    Query.ParamByName('cod_usuario').AsInteger := FCodUsuario;
+    Query.ParamByName('cod_tarefa').AsInteger := FCodTarefa;
+    Query.ExecSQL;
+    Result := True;
+  finally
+    Query.Free;
+  end;
+end;
+
+end.
+

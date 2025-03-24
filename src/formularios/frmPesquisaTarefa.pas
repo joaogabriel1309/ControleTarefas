@@ -1,0 +1,74 @@
+unit frmPesquisaTarefa;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client, Vcl.Grids, Vcl.DBGrids,
+  Vcl.StdCtrls;
+
+type
+  TTfrmPesquisaTarefa = class(TForm)
+    GroupBox1: TGroupBox;
+    Label1: TLabel;
+    EditPesquisa: TEdit;
+    ButtonPesquisa: TButton;
+    DBGrid1: TDBGrid;
+    FDQuery: TFDQuery;
+    DataSource1: TDataSource;
+    procedure ButtonPesquisaClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
+  private
+    procedure BuscarDados(const Pesquisa: String = '');
+  public
+    CodPesquisa: Integer;
+  end;
+
+var
+  TfrmPesquisaTarefa: TTfrmPesquisaTarefa;
+
+implementation
+
+{$R *.dfm}
+
+procedure TTfrmPesquisaTarefa.BuscarDados(const Pesquisa: String = '');
+begin
+  FDQuery.Close;
+  FDQuery.SQL.Clear;
+  FDQuery.SQL.Add('SELECT');
+  FDQuery.SQL.Add('	CODIGO,');
+  FDQuery.SQL.Add('	NOME');
+  FDQuery.SQL.Add('FROM TAREFA');
+  if Pesquisa <> '' then
+  begin
+    FDQuery.SQL.Add('WHERE NOME LIKE :PESQUISA');
+    FDQuery.ParamByName('PESQUISA').AsString := '%' + Pesquisa + '%';
+  end;
+  FDQuery.Open;
+end;
+
+procedure TTfrmPesquisaTarefa.ButtonPesquisaClick(Sender: TObject);
+begin
+  if Trim(EditPesquisa.Text) <> '' then
+    BuscarDados(EditPesquisa.Text)
+  else
+    BuscarDados;
+end;
+
+procedure TTfrmPesquisaTarefa.DBGrid1CellClick(Column: TColumn);
+begin
+  CodPesquisa := DBGrid1.Fields[0].Value;
+  self.Close;
+end;
+
+procedure TTfrmPesquisaTarefa.FormShow(Sender: TObject);
+begin
+  CodPesquisa := 0;
+  BuscarDados;
+end;
+
+end.

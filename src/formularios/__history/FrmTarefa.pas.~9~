@@ -1,0 +1,173 @@
+unit FrmTarefa;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TfrmTarefas = class(TForm)
+    GroupBoxGeral: TGroupBox;
+    EditCodTarefa: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    EditNome: TEdit;
+    ComboBoxTipo: TComboBox;
+    Label3: TLabel;
+    ButtonSalvar: TButton;
+    ButtonExcluir: TButton;
+    ButtonLimpar: TButton;
+    ButtonSair: TButton;
+    EditCodUsuario: TEdit;
+    EditNomeUsuario: TEdit;
+    Label4: TLabel;
+    procedure ButtonSairClick(Sender: TObject);
+    procedure ButtonSalvarClick(Sender: TObject);
+    procedure ButtonLimparClick(Sender: TObject);
+    procedure EditCodTarefaExit(Sender: TObject);
+    procedure ButtonExcluirClick(Sender: TObject);
+    procedure EditCodUsuarioExit(Sender: TObject);
+  private
+    function ValidaDados: TStringList;
+    procedure LimpaForm(const LimpaCod: Boolean = true);
+  public
+  end;
+
+var
+  frmTarefas: TfrmTarefas;
+
+implementation
+
+{$R *.dfm}
+
+uses TTarefa, TUsuario;
+
+procedure TfrmTarefas.ButtonExcluirClick(Sender: TObject);
+var
+  fTarefa: Tarefa;
+begin
+  if Trim(EditCodTarefa.Text) <> '' then
+  begin
+    if Application.MessageBox('Deseja realmente excluir essa tarefa?', 'Atenção', MB_YESNO+MB_ICONQUESTION) = mrYes then
+    begin
+      fTarefa := Tarefa.Create;
+      try
+        fTarefa.Codigo := StrToIntDef(EditCodTarefa.Text, 0);
+        if fTarefa.Excluir then
+        begin
+          Application.MessageBox('Tarefa excluída com sucesso!', 'Informação', MB_OK+MB_ICONINFORMATION);
+          LimpaForm;
+          if EditCodTarefa.CanFocus then
+            EditCodTarefa.SetFocus;
+        end
+        else
+          Application.MessageBox('Erro ao excluir a tarefa.', 'Erro', MB_OK+MB_ICONERROR);
+      finally
+        fTarefa.Free;
+      end;
+    end;
+  end;
+end;
+
+procedure TfrmTarefas.ButtonLimparClick(Sender: TObject);
+begin
+  LimpaForm;
+end;
+
+procedure TfrmTarefas.ButtonSairClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmTarefas.ButtonSalvarClick(Sender: TObject);
+var
+  fResultValida: TStringList;
+  fTarefa: Tarefa;
+begin
+  fResultValida := ValidaDados();
+
+  if fResultValida.Count >= 1 then
+  begin
+    Application.MessageBox(PChar(fResultValida.Text), 'Atenção', MB_OK + MB_ICONWARNING);
+    Exit;
+  end;
+
+  fTarefa := Tarefa.Create(StrToInt(EditCodTarefa.Text), EditNome.Text, ComboBoxTipo.Text);
+  try
+    if fTarefa.Salvar then
+    begin
+      Application.MessageBox('Tarefa salva com sucesso!', 'Informação', MB_OK+MB_ICONINFORMATION);
+      LimpaForm;
+    end
+    else
+      Application.MessageBox('Erro ao salvar tarefa.', 'Erro', MB_OK+MB_ICONERROR);
+  finally
+    fTarefa.Free;
+  end;
+end;
+
+procedure TfrmTarefas.EditCodTarefaExit(Sender: TObject);
+var
+  fTarefa: Tarefa;
+begin
+  LimpaForm(false);
+  if Trim(EditCodTarefa.Text) <> '' then
+  begin
+    fTarefa := Tarefa.BuscarPorCodigo(StrToIntDef(EditCodTarefa.Text, 0));
+    if fTarefa <> nil then
+    begin
+      EditNome.Text := fTarefa.Nome;
+      ComboBoxTipo.Text := fTarefa.Tipo;
+    end;
+  end;
+end;
+
+procedure TfrmTarefas.EditCodUsuarioExit(Sender: TObject);
+var
+  fUsuario: Usuario;
+begin
+  if (Screen.ActiveControl = ButtonLimpar) or (Screen.ActiveControl = ButtonSair) then Exit;
+
+  if Trim(EditCodUsuario.Text) <> '' then
+  begin
+    fUsuario := Usuario.BuscarPorCodigo(StrToIntDef(EditCodUsuario.Text,0));
+    if fUsuario <> nil then
+      EditNomeUsuario.Text := fUsuario.Nome
+    else
+    begin
+      Application.MessageBox('Usuário não encontrado!', 'Informação', MB_OK+MB_ICONINFORMATION);
+      EditNomeUsuario.Clear;
+      if EditCodUsuario.CanFocus then
+        EditCodUsuario.SetFocus;
+    end;
+  end;
+end;
+
+procedure TfrmTarefas.LimpaForm(const LimpaCod: Boolean = true);
+begin
+  if LimpaCod then
+    EditCodTarefa.Text := IntToStr(Tarefa.PegaMaxCodigo);
+
+  EditNome.Clear;
+  ComboBoxTipo.ItemIndex := 0;
+  EditCodUsuario.Clear;
+  EditNomeUsuario.Clear;
+end;
+
+function TfrmTarefas.ValidaDados: TStringList;
+begin
+  Result := TStringList.Create;
+  try
+    if Trim(EditCodTarefa.Text) = '' then
+      Result.Add('* Campo [código] obrigatório!');
+    if Trim(EditNome.Text) = '' then
+      Result.Add('* Campo [descrição] obrigatório!');
+  except
+    on E: Exception do
+      Result.Free;
+  end;
+end;
+
+end.
+

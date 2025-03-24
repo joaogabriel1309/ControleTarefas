@@ -1,0 +1,75 @@
+unit frmPesquisaUsuario;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls, Vcl.Grids,
+  Vcl.DBGrids, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Param,
+  FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf, FireDAC.DApt.Intf,
+  FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
+  Datasnap.DBClient, Datasnap.Provider;
+
+type
+  TTfrmPesquisaUsuario = class(TForm)
+    GroupBox1: TGroupBox;
+    DBGrid1: TDBGrid;
+    EditPesquisa: TEdit;
+    ButtonPesquisa: TButton;
+    Label1: TLabel;
+    FDQuery: TFDQuery;
+    DataSource1: TDataSource;
+    procedure FormShow(Sender: TObject);
+    procedure ButtonPesquisaClick(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
+  private
+    procedure BuscarDados (const Pesquisa: String = '');
+  public
+    CodUsuario: Integer;
+  end;
+
+var
+  TfrmPesquisaUsuario: TTfrmPesquisaUsuario;
+
+implementation
+
+{$R *.dfm}
+
+{ TTfrmPesquisaUsuario }
+
+procedure TTfrmPesquisaUsuario.BuscarDados(const Pesquisa: String = '');
+begin
+  FDQuery.Close;
+  FDQuery.SQL.Clear;
+  FDQuery.SQL.Add('SELECT');
+  FDQuery.SQL.Add('	CODIGO,');
+  FDQuery.SQL.Add('	NOME');
+  FDQuery.SQL.Add('FROM USUARIO');
+  if Pesquisa <> '' then
+  begin
+    FDQuery.SQL.Add('WHERE NOME LIKE :PESQUISA');
+    FDQuery.ParamByName('PESQUISA').AsString := '%' + Pesquisa + '%';
+  end;
+  FDQuery.Open;
+end;
+
+procedure TTfrmPesquisaUsuario.ButtonPesquisaClick(Sender: TObject);
+begin
+  if Trim(EditPesquisa.Text) <> '' then
+    BuscarDados(EditPesquisa.Text)
+  else
+    BuscarDados;
+end;
+
+procedure TTfrmPesquisaUsuario.DBGrid1CellClick(Column: TColumn);
+begin
+  CodUsuario := DBGrid1.Fields[0].Value;
+  self.Close;
+end;
+
+procedure TTfrmPesquisaUsuario.FormShow(Sender: TObject);
+begin
+  BuscarDados;
+end;
+
+end.

@@ -1,0 +1,125 @@
+unit FrmUsuario;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TFormUsuario = class(TForm)
+    GroupBoxPrincipal: TGroupBox;
+    EditCodUsuario: TEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    EditNome: TEdit;
+    ComboBoxSituacao: TComboBox;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    EditSenha: TEdit;
+    EditConfirmaSenha: TEdit;
+    ButtonSair: TButton;
+    ButtonLimpar: TButton;
+    ButtonExcluir: TButton;
+    ButtonSalvar: TButton;
+    procedure ButtonSairClick(Sender: TObject);
+    procedure ButtonSalvarClick(Sender: TObject);
+    procedure ButtonLimparClick(Sender: TObject);
+  private
+    function ValidaDados: TStringList;
+    function ConverteDireito: String;
+    procedure LimpaForm;
+  public
+    { Public declarations }
+  end;
+
+var
+  FormUsuario: TFormUsuario;
+
+implementation
+
+{$R *.dfm}
+
+uses TUsuario;
+
+procedure TFormUsuario.ButtonLimparClick(Sender: TObject);
+begin
+  LimpaForm;
+end;
+
+procedure TFormUsuario.ButtonSairClick(Sender: TObject);
+begin
+  close;
+end;
+
+procedure TFormUsuario.ButtonSalvarClick(Sender: TObject);
+var
+  fResultValida: TStringList;
+  fUsuario: Usuario;
+begin
+  fResultValida := ValidaDados();
+
+  if fResultValida.Count >= 1 then
+  begin
+    Application.MessageBox(PChar(fResultValida.Text), 'Atenção', MB_OK + MB_ICONWARNING);
+    Exit;
+  end;
+
+  fUsuario := Usuario.Create(StrToInt(EditCodUsuario.Text),
+                             EditNome.Text,
+                             ConverteDireito,
+                             EditSenha.Text);
+  try
+    if fUsuario.Salvar then
+    begin
+      Application.MessageBox('Usúario salvo com sucesso!', 'Informação', MB_OK+MB_ICONINFORMATION);
+      LimpaForm;
+    end
+    else
+      Application.MessageBox('Erro ao salvar usúario.', 'Erro', MB_OK+MB_ICONERROR);
+  finally
+     fUsuario.Free;
+  end;
+end;
+
+
+function TFormUsuario.ConverteDireito: String;
+begin
+  case ComboBoxSituacao.ItemIndex of
+    0: Result := 'O';
+    1: Result := 'S';
+  end;
+end;
+
+procedure TFormUsuario.LimpaForm;
+begin
+  EditCodUsuario.Text := IntToStr(Usuario.PegaMaxCodigo);
+  EditNome.Clear;
+  ComboBoxSituacao.ItemIndex := 0;
+  EditSenha.Clear;
+  EditConfirmaSenha.Clear;
+end;
+
+function TFormUsuario.ValidaDados: TStringList;
+begin
+  Result := TStringList.Create;
+
+  try
+    if Trim(EditCodUsuario.Text) = '' then
+      Result.Add('* Campo [código] obrigatório!');
+    if Trim(EditNome.Text) = '' then
+      Result.Add('* Campo [nome] obrigatório!');
+    if Trim(EditSenha.Text) = '' then
+      Result.Add('* Campo [senha] obrigatória!');
+    if Trim(EditConfirmaSenha.Text) = '' then
+      Result.Add('* Campo [confirmar senha] obrigatória!');
+    if Trim(EditSenha.Text) <> Trim(EditConfirmaSenha.Text) then
+      Result.Add('* Senha não conferem!');
+  except
+    on E: Exception do
+      Result.Free;
+  end;
+end;
+
+end.

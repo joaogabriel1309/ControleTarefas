@@ -1,0 +1,13 @@
+object DataModule1: TDataModule1
+  Height = 373
+  Width = 550
+  object ADOConnection1: TADOConnection
+    ConnectionString = 
+      'Provider=MSDASQL.1;Persist Security Info=False;Data Source=MySQL' +
+      'Delphi;'
+    LoginPrompt = False
+    Provider = 'MSDASQL.1'
+    Left = 256
+    Top = 168
+  end
+end

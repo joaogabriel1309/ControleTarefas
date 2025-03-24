@@ -1,0 +1,25 @@
+unit Banco;
+
+interface
+
+uses
+  System.SysUtils, System.Classes;
+
+type
+  TConexaoo = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Conexaoo: TConexaoo;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

@@ -1,0 +1,42 @@
+unit Conexao;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.MySQL,
+  FireDAC.Phys.MySQLDef, FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client,
+  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
+  FireDAC.Comp.DataSet;
+
+type
+  TConexaooo = class(TDataModule)
+    FDConnection: TFDConnection;
+    FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink;
+
+  private
+    { Private declarations }
+  public
+    class function GetConexao: TFDCustomConnection;
+    { Public declarations }
+  end;
+
+var
+  Conexaooo: TConexaooo;
+  FDQuery1: TFDQuery;
+
+
+implementation
+
+{$R *.dfm}
+
+class function TConexaooo.GetConexao: TFDCustomConnection;
+begin
+  if not Assigned(DataModule1) then
+    DataModule1 := TDataModule1.Create(nil);
+
+  Result := DataModule1.FDConnection;
+end;
+
+end.

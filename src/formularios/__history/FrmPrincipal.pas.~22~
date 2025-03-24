@@ -1,0 +1,226 @@
+﻿unit FrmPrincipal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Grids, System.Generics.Collections;
+
+type
+  TFormMain = class(TForm)
+    StringGridPrincipal: TStringGrid;
+    GroupBoxGeral: TGroupBox;
+    EditNomeUsuario: TEdit;
+    EditCodUsuario: TEdit;
+    ComboBoxSituacao: TComboBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    ButtonBuscar: TButton;
+    PanelMenu: TPanel;
+    ButtonUsuario: TButton;
+    ButtonTarefa: TButton;
+    ButtonSair: TButton;
+    Label3: TLabel;
+    ButtonUsuarioTarefa: TButton;
+    ButtonAtualizar: TButton;
+    procedure FormCreate(Sender: TObject);
+    procedure ButtonSairClick(Sender: TObject);
+    procedure ButtonUsuarioClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ButtonTarefaClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure ButtonUsuarioTarefaClick(Sender: TObject);
+    procedure EditCodUsuarioExit(Sender: TObject);
+    procedure ButtonAtualizarClick(Sender: TObject);
+    procedure ButtonBuscarClick(Sender: TObject);
+  private
+    function ValidaPermisao: Boolean;
+    procedure PreencherGrid;
+    procedure LimparStringGrid;
+    { Private declarations }
+  public
+    SisUseLogDireito: String;
+  end;
+
+var
+  FormMain: TFormMain;
+
+const
+  CNT_COLUNA_ID = 0;
+  CNT_COLUNA_DESCRICAO = 1;
+  CNT_COLUNA_TIPO = 2;
+
+implementation
+
+{$R *.dfm}
+
+uses FrmUsuario, FrmLogin, frmTarefa, TTarefa, TarefaController, FrmAtribuicao,
+  TUsuario, TUsuarioTarefa;
+
+var
+  frmUsuario: TFormUsuario;
+  frmTarefa: TfrmTarefas;
+  frmAtribuicao: TTFrmAtribuicao;
+
+procedure TFormMain.ButtonAtualizarClick(Sender: TObject);
+begin
+  PreencherGrid;
+end;
+
+procedure TFormMain.ButtonBuscarClick(Sender: TObject);
+begin
+  PreencherGrid;
+end;
+
+procedure TFormMain.ButtonSairClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TFormMain.ButtonTarefaClick(Sender: TObject);
+begin
+  if ValidaPermisao then
+  begin
+    if not Assigned(frmTarefa) then
+    begin
+      frmTarefa := TfrmTarefas.Create(Self);
+      frmTarefa.Parent := Self;
+    end;
+
+    frmTarefa.Show;
+  end;
+end;
+
+procedure TFormMain.ButtonUsuarioClick(Sender: TObject);
+begin
+  if ValidaPermisao then
+  begin
+    if not Assigned(frmUsuario) then
+    begin
+      frmUsuario := TFormUsuario.Create(Self);
+      frmUsuario.Parent := Self;
+    end;
+
+    frmUsuario.Show;
+  end;
+end;
+
+procedure TFormMain.ButtonUsuarioTarefaClick(Sender: TObject);
+begin
+  if ValidaPermisao then
+  begin
+    if not Assigned(frmAtribuicao) then
+    begin
+      frmAtribuicao := TTFrmAtribuicao.Create(Self);
+      frmAtribuicao.Parent := Self;
+    end;
+
+    frmAtribuicao.Show;
+  end;
+end;
+
+procedure TFormMain.EditCodUsuarioExit(Sender: TObject);
+var
+  fUsuario: Usuario;
+begin
+  if (Screen.ActiveControl = ButtonSair) then Exit;
+
+  if Trim(EditCodUsuario.Text) <> '' then
+  begin
+    fUsuario := Usuario.BuscarPorCodigo(StrToIntDef(EditCodUsuario.Text,0));
+    if fUsuario <> nil then
+      EditNomeUsuario.Text := fUsuario.Nome
+    else
+    begin
+      Application.MessageBox('Usúario não encontrado!', 'Informação', MB_OK+MB_ICONINFORMATION);
+      EditNomeUsuario.Clear;
+      if EditCodUsuario.CanFocus then
+        EditCodUsuario.SetFocus;
+    end;
+  end;
+end;
+
+procedure TFormMain.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  frmUsuario.Free;
+  frmTarefa.Free;
+end;
+
+procedure TFormMain.FormCreate(Sender: TObject);
+var
+  formLogin: TformLogin;
+  fusuario: Usuario;
+begin
+  formLogin := TformLogin.Create(Self);
+  try
+    formLogin.ShowModal;
+    if not formLogin.Validado then
+      Application.Terminate;
+    self.Caption := 'Controlador de tarefas ['+formLogin.NomeUsuario+']';
+    fUsuario := Usuario.BuscarPorCodigo(formLogin.CodUsuario);
+    SisUseLogDireito := fusuario.Direito;
+    EditCodUsuario.Text := IntToStr(fusuario.Codigo);
+    EditCodUsuarioExit(EditCodUsuario);
+  finally
+    formLogin.Free;
+  end;
+end;
+
+procedure TFormMain.FormShow(Sender: TObject);
+begin
+  StringGridPrincipal.Cells[CNT_COLUNA_ID, 0] := 'Código';
+  StringGridPrincipal.Cells[CNT_COLUNA_DESCRICAO, 0] := 'Tarefa';
+  StringGridPrincipal.Cells[CNT_COLUNA_TIPO, 0] := 'Tipo';
+
+  PreencherGrid;
+end;
+
+procedure TFormMain.LimparStringGrid;
+var
+  i, j: Integer;
+begin
+  for i := 1 to StringGridPrincipal.RowCount - 1 do
+    for j := 0 to StringGridPrincipal.ColCount - 1 do
+      StringGridPrincipal.Cells[j, i] := '';
+
+  StringGridPrincipal.RowCount := 2;
+end;
+
+procedure TFormMain.PreencherGrid;
+var
+  ListaTarefas: TList<Tarefa>;
+  fTarefa: Tarefa;
+  i: Integer;
+begin
+  if ComboBoxSituacao.ItemIndex > 0 then
+    ListaTarefas := UsuarioTarefa.PegarTarefasPorUsuario(StrToInt(EditCodUsuario.Text), ComboBoxSituacao.Text[1]);
+  ListaTarefas := UsuarioTarefa.PegarTarefasPorUsuario(StrToInt(EditCodUsuario.Text));
+  try
+    LimparStringGrid;
+    StringGridPrincipal.RowCount := ListaTarefas.Count + 1;
+
+    i := 1;
+    for fTarefa in ListaTarefas do
+    begin
+      StringGridPrincipal.Cells[CNT_COLUNA_ID, i] := IntToStr(fTarefa.Codigo);
+      StringGridPrincipal.Cells[CNT_COLUNA_DESCRICAO, i] := fTarefa.Nome;
+      StringGridPrincipal.Cells[CNT_COLUNA_TIPO, i] := fTarefa.DescricaoTipo;
+      Inc(i);
+    end;
+
+  finally
+    ListaTarefas.Free;
+  end;
+end;
+
+function TFormMain.ValidaPermisao: Boolean;
+begin
+  result := true;
+  if SisUseLogDireito <> 'S' then
+  begin
+    Application.MessageBox('Usuário sem permissão para realiza cadastros.', 'Informação',MB_OK+MB_ICONINFORMATION);
+    result := false;
+  end;
+end;
+
+end.

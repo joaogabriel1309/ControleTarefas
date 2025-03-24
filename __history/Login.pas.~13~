@@ -1,0 +1,60 @@
+unit Login;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TformLogin = class(TForm)
+    EditLogin: TEdit;
+    EditSenha: TEdit;
+    ButtonEntrar: TButton;
+    ButtonCadastrar: TButton;
+    Label1: TLabel;
+    Label2: TLabel;
+    procedure ButtonEntrarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    function ValidaUsuario(const Login, Senha: String): Boolean;
+  public
+    Validado: Boolean;
+
+  end;
+
+var
+  formLogin: TformLogin;
+
+
+implementation
+
+{$R *.dfm}
+
+procedure TformLogin.ButtonEntrarClick(Sender: TObject);
+begin
+  Validado := ValidaUsuario(EditLogin.Text, EditSenha.Text);
+  if Validado then
+   self.Close
+  else
+  begin
+   Application.MessageBox('Login Invalido!', 'Atenção', MB_OK+MB_ICONWARNING);
+   if EditLogin.CanFocus then
+     EditLogin.SetFocus;
+  end;
+end;
+
+procedure TformLogin.FormShow(Sender: TObject);
+begin
+  Validado := false;
+end;
+
+function TformLogin.ValidaUsuario(const Login, Senha: String): Boolean;
+begin
+  //buscar em banco os dados
+  result := false;
+  if (Login = 'joao') and (Senha = '123') then
+    result := true;
+end;
+
+end.

@@ -1,0 +1,85 @@
+﻿unit FrmLogin;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TformLogin = class(TForm)
+    EditNomeUsuario: TEdit;
+    EditSenha: TEdit;
+    ButtonEntrar: TButton;
+    Label1: TLabel;
+    Label2: TLabel;
+    EditCodUsuario: TEdit;
+    ButtonSair: TButton;
+    procedure ButtonEntrarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure EditCodUsuarioExit(Sender: TObject);
+    procedure ButtonSairClick(Sender: TObject);
+  private
+
+  public
+    Validado: Boolean;
+    CodUsuario: Integer;
+    NomeUsuario: String;
+  end;
+
+var
+  formLogin: TformLogin;
+
+
+implementation
+
+{$R *.dfm}
+
+uses TUsuario;
+
+procedure TformLogin.ButtonEntrarClick(Sender: TObject);
+begin
+  Validado :=  Usuario.ValidarLogin(StrToIntDef(EditCodUsuario.Text,0), EditSenha.Text);
+  if Validado then
+  begin
+    CodUsuario := StrToInt(EditCodUsuario.Text);
+    NomeUsuario := EditNomeUsuario.Text;
+    self.Close
+  end
+  else
+  begin
+   Application.MessageBox('Login Invalido!', 'Atenção', MB_OK+MB_ICONWARNING);
+   if EditSenha.CanFocus then
+     EditSenha.SetFocus;
+  end;
+end;
+
+procedure TformLogin.ButtonSairClick(Sender: TObject);
+begin
+  self.Close;
+end;
+
+procedure TformLogin.EditCodUsuarioExit(Sender: TObject);
+var
+  fUsuario: Usuario;
+begin
+  if Trim(EditCodUsuario.Text) = '' then Exit;
+
+  fUsuario := Usuario.BuscarPorCodigo(StrToIntDef(EditCodUsuario.Text,0));
+  if fUsuario <> nil then
+    EditNomeUsuario.Text := fUsuario.Nome
+  else
+  begin
+  Application.MessageBox('Usuário não encontrado!', 'Atenção',MB_OK+MB_ICONWARNING);
+  EditNomeUsuario.Clear;
+  if EditCodUsuario.CanFocus then
+    EditCodUsuario.SetFocus;
+  end;
+end;
+
+procedure TformLogin.FormShow(Sender: TObject);
+begin
+  Validado := false;
+end;
+
+end.

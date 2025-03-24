@@ -1,0 +1,102 @@
+object TFrmAtribuicao: TTFrmAtribuicao
+  Left = 0
+  Top = 0
+  BorderStyle = bsToolWindow
+  Caption = 'Atribuir tarefas'
+  ClientHeight = 177
+  ClientWidth = 399
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poDesigned
+  TextHeight = 15
+  object GroupBoxGeral: TGroupBox
+    Left = 0
+    Top = 0
+    Width = 399
+    Height = 137
+    Align = alTop
+    TabOrder = 0
+    ExplicitWidth = 492
+    object Label1: TLabel
+      Left = 24
+      Top = 11
+      Width = 40
+      Height = 15
+      Caption = 'Us'#250'ario'
+    end
+    object Label2: TLabel
+      Left = 24
+      Top = 67
+      Width = 32
+      Height = 15
+      Caption = 'Tarefa'
+    end
+    object EditCodUsuario: TEdit
+      Left = 24
+      Top = 32
+      Width = 57
+      Height = 23
+      NumbersOnly = True
+      TabOrder = 0
+      OnExit = EditCodUsuarioExit
+    end
+    object EditNomeUsuario: TEdit
+      Left = 87
+      Top = 32
+      Width = 298
+      Height = 23
+      Enabled = False
+      ReadOnly = True
+      TabOrder = 1
+    end
+    object EditCodTarefa: TEdit
+      Left = 24
+      Top = 88
+      Width = 57
+      Height = 23
+      NumbersOnly = True
+      TabOrder = 2
+      OnExit = EditCodTarefaExit
+    end
+    object EditNomeTarefa: TEdit
+      Left = 87
+      Top = 88
+      Width = 298
+      Height = 23
+      Enabled = False
+      ReadOnly = True
+      TabOrder = 3
+    end
+  end
+  object ButtonSalvar: TButton
+    Left = 157
+    Top = 150
+    Width = 75
+    Height = 25
+    Caption = '&Salvar'
+    TabOrder = 1
+    OnClick = ButtonSalvarClick
+  end
+  object ButtonLimpar: TButton
+    Left = 238
+    Top = 150
+    Width = 75
+    Height = 25
+    Caption = '&Limpar'
+    TabOrder = 2
+    OnClick = ButtonLimparClick
+  end
+  object ButtonSair: TButton
+    Left = 319
+    Top = 150
+    Width = 75
+    Height = 25
+    Caption = '&Fechar'
+    TabOrder = 3
+    OnClick = ButtonSairClick
+  end
+end

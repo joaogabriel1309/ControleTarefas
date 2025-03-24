@@ -1,0 +1,18 @@
+program ProjetoControleTarefas;
+
+uses
+  Vcl.Forms,
+  FrmPrincipal in 'src\formularios\FrmPrincipal.pas' {FormMain},
+  FrmLogin in 'src\formularios\FrmLogin.pas' {formLogin},
+  AuthController in 'src\controladores\AuthController.pas',
+  FrmUsuario in 'src\formularios\FrmUsuario.pas' {FormUsuario};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TFormMain, FormMain);
+  Application.CreateForm(TFormUsuario, FormUsuario);
+  Application.Run;
+end.

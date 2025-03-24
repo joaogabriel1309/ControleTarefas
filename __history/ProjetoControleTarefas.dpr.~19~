@@ -1,0 +1,24 @@
+program ProjetoControleTarefas;
+
+uses
+  Vcl.Forms,
+  FrmPrincipal in 'src\formularios\FrmPrincipal.pas' {FormMain},
+  FrmLogin in 'src\formularios\FrmLogin.pas' {formLogin},
+  FrmUsuario in 'src\formularios\FrmUsuario.pas' {FormUsuario},
+  frmTarefa in 'src\formularios\frmTarefa.pas' {frmTarefas},
+  TTarefa in 'src\modelos\TTarefa.pas',
+  TUsuario in 'src\modelos\TUsuario.pas',
+  Conexao in 'src\dados\Conexao.pas' {Tconexao: TDataModule},
+  TUsuarioTarefa in 'src\modelos\TUsuarioTarefa.pas',
+  FrmAtribuicao in 'src\formularios\FrmAtribuicao.pas' {TFrmAtribuicao},
+  frmPesquisaUsuario in 'src\formularios\frmPesquisaUsuario.pas' {TfrmPesquisaUsuario};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TTconexao, Tconexao);
+  Application.CreateForm(TFormMain, FormMain);
+  Application.Run;
+end.
